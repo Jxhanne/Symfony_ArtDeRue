@@ -16,8 +16,10 @@
                 <td>{{ photo.datePriseVue ? photo.datePriseVue|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>NomFichier</th>
-                <td>{{ photo.nomFichier }}</td>
+                <th>Photo</th>
+                {% if photo.nomFichier %}
+                    <img src="{{ asset(photo.nomFichier) }}" width="200">
+                {% endif %}
             </tr>
             <tr>
                 <th>EtatOeuvre</th>

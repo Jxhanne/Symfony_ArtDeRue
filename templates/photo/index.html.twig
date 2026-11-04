@@ -19,8 +19,12 @@
         {% for photo in photos %}
             <tr>
                 <td>{{ photo.id }}</td>
-                <td>{{ photo.datePriseVue ? photo.datePriseVue|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ photo.nomFichier }}</td>
+                <td>{{ photo.datePriseVue ? photo.datePriseVue|date('Y-m-d') : '' }}</td>
+                <td>
+                    {% if photo.nomFichier %}
+                        <img src="{{ asset(photo.nomFichier) }}" width="100">
+                    {% endif %}
+                </td>
                 <td>{{ photo.etatOeuvre }}</td>
                 <td>
                     <a href="{{ path('app_photo_show', {'id': photo.id}) }}">show</a>

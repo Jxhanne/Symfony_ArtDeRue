@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PhotoRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: PhotoRepository::class)]
 class Photo
@@ -13,7 +14,7 @@ class Photo
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $datePriseVue = null;
 
     #[ORM\Column(length: 255)]
