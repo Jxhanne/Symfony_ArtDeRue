@@ -20,11 +20,11 @@ class PhotoType extends AbstractType
             ->add('etatOeuvre')
             ->add('oeuvre', EntityType::class, [
                 'class' => Oeuvre::class,
-                'choice_label' => 'id',
+                'choice_label' => 'titre',
             ])
             ->add('benevole', EntityType::class, [
                 'class' => Benevole::class,
-                'choice_label' => 'id',
+                'choice_label' => 'nom',
             ])
         ;
     }

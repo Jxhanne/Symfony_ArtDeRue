@@ -19,6 +19,7 @@ class TechniqueType extends AbstractType
                 'class' => Oeuvre::class,
                 'choice_label' => 'id',
                 'multiple' => true,
+                'required' => false,
             ])
         ;
     }
