@@ -3,41 +3,34 @@
 {% block title %}Oeuvre index{% endblock %}
 
 {% block body %}
-    <h1>Oeuvre index</h1>
+    <div class="container mt-4">
+        <h1>Oeuvre index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Titre</th>
-                <th>DateCreation</th>
-                <th>Description</th>
-                <th>EstDetruit</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for oeuvre in oeuvres %}
-            <tr>
-                <td>{{ oeuvre.id }}</td>
-                <td>{{ oeuvre.titre }}</td>
-                <td>{{ oeuvre.dateCreation ? oeuvre.dateCreation|date('Y-m-d') : '' }}</td>
-                <td>{{ oeuvre.description }}</td>
-                <td>{{ oeuvre.estDetruit ? 'Yes' : 'No' }}</td>
-                <td>
-                    <a href="{{ path('app_oeuvre_show', {'id': oeuvre.id}) }}">show</a>
-                    <a href="{{ path('app_oeuvre_edit', {'id': oeuvre.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        {% if is_granted('ROLE_USER') %}
+            <a href="{{ path('app_oeuvre_new') }}" class="btn btn-success mb-3">Ajouter une oeuvre</a>
+        {% endif %}
 
-    {% if is_granted('ROLE_USER') %}
-        <a href="{{ path('app_oeuvre_new') }}">Create new</a>
-    {% endif %}
+        <div class="row">
+            {% for oeuvre in oeuvres %}
+                {% set photo = oeuvre.photos|first %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        {% if photo and photo.nomFichier %}
+                            <img src="{{ asset(photo.nomFichier) }}" class="card-img-top" alt="{{ oeuvre.titre }}" style="height:200px; object-fit:cover">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ oeuvre.titre }}</h5>
+                            <a href="{{ path('app_oeuvre_show', {'id': oeuvre.id}) }}" class="btn btn-primary">Détails</a>
+                            {% if is_granted('ROLE_USER') %}
+                                <a href="{{ path('app_oeuvre_edit', {'id': oeuvre.id}) }}" class="btn btn-warning">Modifier</a>
+                                {{ include('oeuvre/_delete_form.html.twig') }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p>Pas d'oeuvres</p>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

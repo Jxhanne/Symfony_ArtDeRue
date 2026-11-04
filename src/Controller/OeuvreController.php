@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Filesystem\Filesystem;
 
 #[Route('/oeuvre')]
 final class OeuvreController extends AbstractController
@@ -73,11 +74,20 @@ final class OeuvreController extends AbstractController
 
     #[Route('/{id}', name: 'app_oeuvre_delete', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
-    public function delete(Request $request, Oeuvre $oeuvre, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Oeuvre $oeuvre, EntityManagerInterface $em): Response
     {
         if ($this->isCsrfTokenValid('delete'.$oeuvre->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($oeuvre);
-            $entityManager->flush();
+            $fs = new Filesystem();
+            $racine = $this->getParameter('kernel.project_dir');
+            
+            foreach ($oeuvre->getPhotos() as $photo) {
+                if ($photo->getNomFichier()) {
+                    $fs->remove($racine . '/public/' . $photo->getNomFichier());
+                }
+            }
+
+            $em->remove($oeuvre);
+            $em->flush();
         }
 
         return $this->redirectToRoute('app_oeuvre_index', [], Response::HTTP_SEE_OTHER);
