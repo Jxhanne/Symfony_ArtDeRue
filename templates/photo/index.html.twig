@@ -27,19 +27,21 @@
                 </td>
                 <td>{{ photo.etatOeuvre }}</td>
                 <td>
-                    <a href="{{ path('app_photo_show', {'id': photo.id}) }}">show</a>
-                    <a href="{{ path('app_photo_edit', {'id': photo.id}) }}">edit</a>
+                    <a href="{{ path('app_photo_show', {'id': photo.id}) }}">Voir</a>
+                    {% if is_granted('ROLE_USER') %}
+                        <a href="{{ path('app_photo_edit', {'id': photo.id}) }}">Modifier</a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="5">Pas de photo</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
     {% if is_granted('ROLE_USER') %}
-        <a href="{{ path('app_photo_new') }}">Create new</a>
+        <a href="{{ path('app_photo_new') }}">Ajouter une photo</a>
     {% endif %}
 {% endblock %}

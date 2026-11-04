@@ -25,19 +25,21 @@
                 <td>{{ artiste.description }}</td>
                 <td>{{ artiste.nationalite }}</td>
                 <td>
-                    <a href="{{ path('app_artiste_show', {'id': artiste.id}) }}">show</a>
-                    <a href="{{ path('app_artiste_edit', {'id': artiste.id}) }}">edit</a>
+                    <a href="{{ path('app_artiste_show', {'id': artiste.id}) }}">Voir</a>
+                    {% if is_granted('ROLE_USER') %}
+                        <a href="{{ path('app_artiste_edit', {'id': artiste.id}) }}">Modifier</a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">no records found</td>
+                <td colspan="6">Pas d'artiste</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
     {% if is_granted('ROLE_USER') %}
-        <a href="{{ path('app_artiste_new') }}">Create new</a>
+        <a href="{{ path('app_artiste_new') }}">Ajouter un artiste</a>
     {% endif %}
 {% endblock %}
