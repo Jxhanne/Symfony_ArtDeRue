@@ -21,6 +21,31 @@
         {% endif %}
     </head>
     <body>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{ path('app_oeuvre_index') }}">Art-2-Rue</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="menu">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item"><a class="nav-link" href="{{ path('app_oeuvre_index') }}">Oeuvres</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ path('app_artiste_index') }}">Artistes</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ path('app_lieu_index') }}">Lieux</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ path('app_technique_index') }}">Techniques</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ path('app_photo_index') }}">Photos</a></li>
+                    </ul>
+                    <ul class="navbar-nav">
+                        {% if is_granted('ROLE_USER') %}
+                            <li class="nav-item"><a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a></li>
+                        {% else %}
+                            <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">Connexion</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
         {% block body %}{% endblock %}
     </body>
 </html>
