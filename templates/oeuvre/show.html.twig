@@ -55,6 +55,5 @@
 
     {% if is_granted('ROLE_USER') %}
         <a href="{{ path('app_oeuvre_edit', {'id': oeuvre.id}) }}">Modifier</a>
-        <a href="{{ path('app_oeuvre_delete', {'id': oeuvre.id}) }}">Supprimer</a>
     {% endif %}
 {% endblock %}
