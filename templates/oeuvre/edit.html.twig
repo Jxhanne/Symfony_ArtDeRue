@@ -5,9 +5,8 @@
 {% block body %}
     <h1>Edit Oeuvre</h1>
 
-    {{ include('oeuvre/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('oeuvre/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
 
     <a href="{{ path('app_oeuvre_index') }}">Retour</a>
 
-    {{ include('oeuvre/_delete_form.html.twig') }}
 {% endblock %}

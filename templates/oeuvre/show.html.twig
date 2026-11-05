@@ -37,19 +37,29 @@
             <p>Anonyme</p>
         {% endfor %}
         <br> 
-        <h2>Photos</h2>
-            <div class="row">
-                {% for photo in oeuvre.photos %}
-                    {% if photo.nomFichier %}
-                        <div class="col-md-3 mb-3">
-                            <img src="{{ asset(photo.nomFichier) }}" class="img-fluid rounded" alt="{{ oeuvre.titre }}" style="height:200px; width:100%; object-fit:cover">
-                            <small>{{ photo.datePriseVue|date('d/m/Y') }}</small>
+    <h2>Photos</h2>
+        <div class="row">
+            {% for photo in oeuvre.photos %}
+                {% if photo.nomFichier %}
+                    <div class="col-md-3 mb-3">
+                        <img src="{{ asset(photo.nomFichier) }}" class="img-fluid rounded" alt="{{ oeuvre.titre }}" style="height:200px; width:100%; object-fit:cover; cursor:pointer" data-bs-toggle="modal" data-bs-target="#modalPhoto{{ photo.id }}">
+                        <small>{{ photo.datePriseVue|date('d/m/Y') }}</small>
+                    </div>
+
+                    <div class="modal fade" id="modalPhoto{{ photo.id }}" tabindex="-1">
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-body p-0">
+                                    <img src="{{ asset(photo.nomFichier) }}" class="img-fluid w-100" alt="{{ oeuvre.titre }}">
+                                </div>
+                            </div>
                         </div>
-                    {% endif %}
-                {% else %}
-                    <p>Aucune photo.</p>
-                {% endfor %}
-            </div>
+                    </div>
+                {% endif %}
+            {% else %}
+                <p>Aucune photo.</p>
+            {% endfor %}
+        </div>
 
     <a href="{{ path('app_oeuvre_index') }}">Retour</a>
 
