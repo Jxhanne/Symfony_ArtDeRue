@@ -73,11 +73,15 @@ final class LieuController extends AbstractController
 
     #[Route('/{id}', name: 'app_lieu_delete', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
-    public function delete(Request $request, Lieu $lieu, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Lieu $lieu, EntityManagerInterface $em): Response
     {
         if ($this->isCsrfTokenValid('delete'.$lieu->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($lieu);
-            $entityManager->flush();
+            if ($lieu->getOeuvres()->count() > 0) {
+                $this->addFlash('danger', 'Impossible : ce lieu a des oeuvres.');
+                return $this->redirectToRoute('app_lieu_index', [], Response::HTTP_SEE_OTHER);
+            }
+            $em->remove($lieu);
+            $em->flush();
         }
 
         return $this->redirectToRoute('app_lieu_index', [], Response::HTTP_SEE_OTHER);

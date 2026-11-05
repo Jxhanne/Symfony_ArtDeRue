@@ -73,11 +73,15 @@ final class TechniqueController extends AbstractController
 
     #[Route('/{id}', name: 'app_technique_delete', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
-    public function delete(Request $request, Technique $technique, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Technique $technique, EntityManagerInterface $em): Response
     {
         if ($this->isCsrfTokenValid('delete'.$technique->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($technique);
-            $entityManager->flush();
+            if ($technique->getOeuvres()->count() > 0) {
+                $this->addFlash('danger', 'Impossible : cette technique a des oeuvres.');
+                return $this->redirectToRoute('app_technique_index', [], Response::HTTP_SEE_OTHER);
+            }
+            $em->remove($technique);
+            $em->flush();
         }
 
         return $this->redirectToRoute('app_technique_index', [], Response::HTTP_SEE_OTHER);
