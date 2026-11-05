@@ -30,6 +30,14 @@
         </tbody>
     </table>
 
+    <h2>Artistes</h2>
+        {% for artiste in oeuvre.artistes %}
+            <a href="{{ path('app_artiste_show', {'id': artiste.id}) }}">{{ artiste.pseudo }}</a>
+        {% else %}
+            <p>Anonyme</p>
+        {% endfor %}
+        <br> 
+
     <a href="{{ path('app_oeuvre_index') }}">back to list</a>
 
     {% if is_granted('ROLE_USER') %}

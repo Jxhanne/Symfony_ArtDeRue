@@ -20,6 +20,9 @@
                         {% endif %}
                         <div class="card-body">
                             <h5 class="card-title">{{ oeuvre.titre }}</h5>
+                            <p class="card-text">
+                                {% for artiste in oeuvre.artistes %}{{ artiste.pseudo }}{% if not loop.last %}, {% endif %}{% endfor %}
+                            </p>
                             <a href="{{ path('app_oeuvre_show', {'id': oeuvre.id}) }}" class="btn btn-primary">Détails</a>
                             {% if is_granted('ROLE_USER') %}
                                 <a href="{{ path('app_oeuvre_edit', {'id': oeuvre.id}) }}" class="btn btn-warning">Modifier</a>
