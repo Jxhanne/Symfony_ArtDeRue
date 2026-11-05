@@ -37,12 +37,24 @@
             <p>Anonyme</p>
         {% endfor %}
         <br> 
+        <h2>Photos</h2>
+            <div class="row">
+                {% for photo in oeuvre.photos %}
+                    {% if photo.nomFichier %}
+                        <div class="col-md-3 mb-3">
+                            <img src="{{ asset(photo.nomFichier) }}" class="img-fluid rounded" alt="{{ oeuvre.titre }}" style="height:200px; width:100%; object-fit:cover">
+                            <small>{{ photo.datePriseVue|date('d/m/Y') }}</small>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <p>Aucune photo.</p>
+                {% endfor %}
+            </div>
 
-    <a href="{{ path('app_oeuvre_index') }}">back to list</a>
+    <a href="{{ path('app_oeuvre_index') }}">Retour</a>
 
     {% if is_granted('ROLE_USER') %}
-        <a href="{{ path('app_oeuvre_edit', {'id': oeuvre.id}) }}">edit</a>
-
-        {{ include('oeuvre/_delete_form.html.twig') }}
+        <a href="{{ path('app_oeuvre_edit', {'id': oeuvre.id}) }}">Modifier</a>
+        <a href="{{ path('app_oeuvre_delete', {'id': oeuvre.id}) }}">Supprimer</a>
     {% endif %}
 {% endblock %}

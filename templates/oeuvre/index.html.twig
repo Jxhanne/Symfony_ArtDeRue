@@ -15,8 +15,26 @@
                 {% set photo = oeuvre.photos|first %}
                 <div class="col-md-4 mb-4">
                     <div class="card">
-                        {% if photo and photo.nomFichier %}
-                            <img src="{{ asset(photo.nomFichier) }}" class="card-img-top" alt="{{ oeuvre.titre }}" style="height:200px; object-fit:cover">
+                        {% if oeuvre.photos|length > 0 %}
+                            <div id="carousel{{ oeuvre.id }}" class="carousel slide">
+                                <div class="carousel-inner">
+                                    {% for photo in oeuvre.photos %}
+                                        {% if photo.nomFichier %}
+                                            <div class="carousel-item {{ loop.first ? 'active' : '' }}">
+                                                <img src="{{ asset(photo.nomFichier) }}" class="d-block w-100" alt="{{ oeuvre.titre }}" style="height:200px; object-fit:cover">
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                {% if oeuvre.photos|length > 1 %}
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel{{ oeuvre.id }}" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon"></span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#carousel{{ oeuvre.id }}" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon"></span>
+                                    </button>
+                                {% endif %}
+                            </div>
                         {% endif %}
                         <div class="card-body">
                             <h5 class="card-title">{{ oeuvre.titre }}</h5>
