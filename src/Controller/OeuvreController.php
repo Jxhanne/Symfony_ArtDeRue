@@ -72,6 +72,16 @@ final class OeuvreController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/detruire', name: 'app_oeuvre_detruire', methods: ['POST'])]
+    #[IsGranted('ROLE_USER')]
+    public function detruire(Oeuvre $oeuvre, EntityManagerInterface $em): Response
+    {
+        $oeuvre->setEstDetruit(true);
+        $em->flush();
+
+        return $this->redirectToRoute('app_oeuvre_index', [], Response::HTTP_SEE_OTHER);
+    }
+
     #[Route('/{id}', name: 'app_oeuvre_delete', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
     public function delete(Request $request, Oeuvre $oeuvre, EntityManagerInterface $em): Response
@@ -79,7 +89,7 @@ final class OeuvreController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$oeuvre->getId(), $request->getPayload()->getString('_token'))) {
             $fs = new Filesystem();
             $racine = $this->getParameter('kernel.project_dir');
-            
+
             foreach ($oeuvre->getPhotos() as $photo) {
                 if ($photo->getNomFichier()) {
                     $fs->remove($racine . '/public/' . $photo->getNomFichier());

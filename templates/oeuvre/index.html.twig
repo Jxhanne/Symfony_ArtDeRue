@@ -20,13 +20,20 @@
                         {% endif %}
                         <div class="card-body">
                             <h5 class="card-title">{{ oeuvre.titre }}</h5>
+                            {% if oeuvre.estDetruit %}
+                                <span class="badge bg-danger">Détruite</span>
+                            {% endif %}
                             <p class="card-text">
                                 {% for artiste in oeuvre.artistes %}{{ artiste.pseudo }}{% if not loop.last %}, {% endif %}{% endfor %}
                             </p>
                             <a href="{{ path('app_oeuvre_show', {'id': oeuvre.id}) }}" class="btn btn-primary">Détails</a>
                             {% if is_granted('ROLE_USER') %}
                                 <a href="{{ path('app_oeuvre_edit', {'id': oeuvre.id}) }}" class="btn btn-warning">Modifier</a>
-                                {{ include('oeuvre/_delete_form.html.twig') }}
+                                {% if not oeuvre.estDetruit %}
+                                    <form method="post" action="{{ path('app_oeuvre_detruire', {'id': oeuvre.id}) }}" class="d-inline">
+                                        <button class="btn btn-secondary">Détruite</button>
+                                    </form>
+                                {% endif %}
                             {% endif %}
                         </div>
                     </div>
