@@ -27,9 +27,26 @@ CREATE USER 'artderue'@'localhost' IDENTIFIED BY 'epsi';
 GRANT ALL ON artderue.* TO 'artderue'@'localhost';
 ```
 
-Importe les données :
+## Base de données (au choix)
+
+### Option 1 : avec les données de test
 ```bash
 mysql -u artderue -pepsi artderue < artderue.sql
+```
+Contient les œuvres, artistes, lieux, techniques, photos et le bénévole de test.
+
+### Option 2 : base vide avec les migrations
+```bash
+symfony console doctrine:migrations:migrate
+```
+Crée seulement la structure. Il faut ensuite créer un bénévole :
+```bash
+symfony console security:hash-password
+symfony console dbal:run-sql 'INSERT INTO benevole (email, roles, password, nom, prenom) VALUES ("test@test.fr", "[]", "HASH", "Dupont", "Jean")'
+```
+
+## Lancer l'appli
+```bash
 symfony server:start
 ```
 
